@@ -22,10 +22,13 @@ public class GenreService {
         return result.stream().map(GenreDTO::new).collect(Collectors.toList());
     }
 
-    public GenreDTO findById(Long id){
+    public Genre findById(Long id) {
         Optional<Genre> result = repository.findById(id);
-        return new GenreDTO(result.orElseThrow(() -> {
-           throw new ObjectNotFoundException(id, Genre.class);
-        }));
+        return result.orElseThrow(() -> {
+            throw new ObjectNotFoundException(id, Genre.class);
+        });
+    }
+    public GenreDTO findByIdDTO(Long id){
+        return new GenreDTO(findById(id));
     }
 }
