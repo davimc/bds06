@@ -1,5 +1,7 @@
 package com.devsuperior.movieflix.entities;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
