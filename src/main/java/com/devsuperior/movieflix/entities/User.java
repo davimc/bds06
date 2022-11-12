@@ -6,10 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -30,6 +27,8 @@ public class User implements UserDetails, Serializable {
         inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
     public User() {
     }
 
@@ -62,6 +61,10 @@ public class User implements UserDetails, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     @Override
