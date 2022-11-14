@@ -4,11 +4,13 @@ import com.devsuperior.movieflix.dto.UserDTO;
 import com.devsuperior.movieflix.entities.User;
 import com.devsuperior.movieflix.repositories.UserRepository;
 import com.devsuperior.movieflix.services.exceptions.ObjectNotFoundException;
+import com.devsuperior.movieflix.services.exceptions.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,5 +54,15 @@ public class UserService implements UserDetailsService {
     public Page<UserDTO> findAllPaged(Pageable pageable) {
         Page<User> list = repository.findAll(pageable);
         return list.map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public User authenticated() {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            return (repository.findByEmail(username).get());
+        }catch (Exception e) {
+            throw new UnauthorizedException("Invalid user");
+        }
     }
 }
