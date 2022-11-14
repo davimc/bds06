@@ -1,6 +1,7 @@
 package com.devsuperior.movieflix.services;
 
 import com.devsuperior.movieflix.dto.MovieDTO;
+import com.devsuperior.movieflix.dto.MovieReviewDTO;
 import com.devsuperior.movieflix.entities.Genre;
 import com.devsuperior.movieflix.entities.Movie;
 import com.devsuperior.movieflix.repositories.MovieRepository;
@@ -27,10 +28,17 @@ public class MovieService {
         return result;
     }
 
-    public MovieDTO findById(Long id) {
+    private Movie findById(Long id) {
         Optional<Movie> obj = repository.findById(id);
-        return new MovieDTO(obj.orElseThrow(() -> {
+        return obj.orElseThrow(() -> {
             throw new ObjectNotFoundException(id, Movie.class);
-        }));
+        });
+    }
+    public MovieDTO findByIdDTO(Long id) {
+        return new MovieDTO(findById(id));
+    }
+    public MovieReviewDTO findMovieWithReview(Long id) {
+        Movie obj = findById(id);
+        return new MovieReviewDTO(obj);
     }
 }

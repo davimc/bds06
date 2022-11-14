@@ -1,11 +1,11 @@
 package com.devsuperior.movieflix.resources;
 
 import com.devsuperior.movieflix.dto.MovieDTO;
+import com.devsuperior.movieflix.dto.MovieReviewDTO;
 import com.devsuperior.movieflix.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +32,12 @@ public class MovieResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<MovieDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+        return ResponseEntity.ok().body(service.findByIdDTO(id));
 
     }
 
-   /* @GetMapping(value = "/{id}/reviews")
-    public ResponseEntity<Movie>*/
+    @GetMapping(value = "/{id}/reviews")
+    public ResponseEntity<MovieReviewDTO> findWithReview(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.findMovieWithReview(id));
+    }
 }
